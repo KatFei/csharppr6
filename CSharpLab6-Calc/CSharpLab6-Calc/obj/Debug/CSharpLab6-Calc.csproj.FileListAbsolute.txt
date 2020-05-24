@@ -1,0 +1,10 @@
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\obj\Debug\CSharpLab6-Calc.csprojAssemblyReference.cache
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\obj\Debug\CSharpLab6_Calc.Properties.Resources.resources
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\obj\Debug\CSharpLab6-Calc.csproj.GenerateResource.cache
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\obj\Debug\CSharpLab6-Calc.csproj.CoreCompileInputs.cache
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\bin\Debug\CSharpLab6-Calc.exe.config
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\bin\Debug\CSharpLab6-Calc.exe
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\bin\Debug\CSharpLab6-Calc.pdb
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\obj\Debug\CSharpLab6-Calc.exe
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\obj\Debug\CSharpLab6-Calc.pdb
+C:\Users\Екатерина\Source\Repos\KatFei\csharppr6\CSharpLab6-Calc\CSharpLab6-Calc\obj\Debug\CSharpLab6_Calc.Calculator.resources
