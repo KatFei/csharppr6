@@ -7,15 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace CSharpLab6_Calc
 {
     public partial class Calculator : Form
     {
-        Double value = 0; //result ?
+        Double value = 0;
         String operation = "";
-        //String queue = "";
-        
+        Double size = 0;
+
         bool operation_pressed = false;
         public Calculator()
         {
@@ -25,9 +26,60 @@ namespace CSharpLab6_Calc
                     //cntrl.Text.ToString().All(Char.IsDigit)
                 {
                     cntrl.Click += bNumeric_Click; }
+                cntrl.Dock = DockStyle.Fill;
             }
-        }
 
+            foreach (Control cntrl in this.flLayoutTop.Controls)
+            {
+                cntrl.Dock = DockStyle.Fill;
+            }
+            tableLayoutPanel1.Dock = DockStyle.Fill;
+            
+            flLayoutTop.Dock = DockStyle.Fill;
+            
+            size = labelResult.Font.Size;
+        }
+        private void ResizeLblResult()
+        {
+            //от какого Width должна зависеть длина текста в label??
+            //if (labelResult.Width >= tableLayoutPanel1.Size.Width - 40)
+            if (labelResult.Width >= this.Size.Width - 65)
+            {
+                while (labelResult.Width < System.Windows.Forms.TextRenderer.MeasureText(labelResult.Text,
+                new Font(labelResult.Font.FontFamily, labelResult.Font.Size, labelResult.Font.Style)).Width)
+                {
+                    labelResult.Font = new Font(labelResult.Font.FontFamily, labelResult.Font.Size - 2f, labelResult.Font.Style);
+                }
+            }
+            
+            else
+            //if (labelResult.Width < tableLayoutPanel1.Size.Width - 60)
+            if (labelResult.Width < this.Size.Width - 80)
+            {
+                float formWidth = this.CurrentAutoScaleDimensions.Width;
+                //ResizeLblResult();
+                //labelResult.Font = new Font(labelResult.Font.FontFamily, (float)size, labelResult.Font.Style);
+                //if (labelResult.Width >= this.ClientSize.Width - 50)
+                //{
+                //    while (labelResult.Width < System.Windows.Forms.TextRenderer.MeasureText(labelResult.Text,
+                //    new Font(labelResult.Font.FontFamily, labelResult.Font.Size, labelResult.Font.Style)).Width)
+                //    {
+                //        labelResult.Font = new Font(labelResult.Font.FontFamily, labelResult.Font.Size - 2f, labelResult.Font.Style);
+                //    }
+                //}
+                
+                if (labelResult.Width >= this.Size.Width - 65)
+                {
+                    while (labelResult.Width < System.Windows.Forms.TextRenderer.MeasureText(labelResult.Text,
+                    new Font(labelResult.Font.FontFamily, labelResult.Font.Size, labelResult.Font.Style)).Width)
+                    {
+                        labelResult.Font = new Font(labelResult.Font.FontFamily, labelResult.Font.Size - 2f, labelResult.Font.Style);
+                    }
+                }
+            }
+
+        }
+        
         private Double Calculate() {
             switch (operation)
             {
@@ -62,54 +114,38 @@ namespace CSharpLab6_Calc
         private void bEqual_Click(object sender, EventArgs e)
         {
             lblEquation.Text = "";
+            //! ! !
+            //учитывать возможное изменение длины > n=16 поддерживаемых  символов
             labelResult.Text = Calculate().ToString();
-            //запихнуть это в функцию Calculate а этот handler назвать Equal_Click 
-            //switch (operation)
-            //{
-            //    case "+":
-            //        labelResult.Text = (value + Double.Parse(labelResult.Text)).ToString();
-            //        break;
-            //    case "-":
-            //        labelResult.Text = (value - Double.Parse(labelResult.Text)).ToString();
-            //        break;
-            //    case "*":
-            //        labelResult.Text = (value * Double.Parse(labelResult.Text)).ToString();
-            //        break;
-            //    case "/":
-            //        labelResult.Text = (value / Double.Parse(labelResult.Text)).ToString();
-            //        break;
-            //    default:
-            //        break;
-            //}
-            //добавлять промежуточный результат в буфер обмена!
-            //Clipboard.SetText(labelResult.Text);//Clipboard.SetText(value);
+            
             operation_pressed = false;
             operation = "";
         }
 
         private void bNumeric_Click(object sender, EventArgs e)
         {
-            //if (labelResult.Text == "0")
-            //result.Clear();
+            // максимум 16 цифр
+            if (labelResult.Text.Replace(".", "").Length < 16) {
+                if (labelResult.Text == "NaN")
+                    labelResult.Text = "";
+                Button b = (Button)sender;
+                if ((labelResult.Text == "0") || (operation_pressed))
+                { 
+                    if(b.Text.ToString() =="."){ 
+                        labelResult.Text = "0."; //"0."; переделать в точку везде
+                    }
+                    else
+                        labelResult.Text = b.Text;
+                    operation_pressed = false;
 
-            Button b = (Button)sender;
-            if ((labelResult.Text == "0") || (operation_pressed))
-            { 
-                if(b.Text.ToString() =="."){ 
-                    labelResult.Text = "0."; //"0."; переделать в точку везде
                 }
                 else
-                    labelResult.Text = b.Text;
-                operation_pressed = false;
+                    if ((b.Text != ".") || (!labelResult.Text.Contains("."))) 
+                    { 
+                        labelResult.Text = labelResult.Text + ((Button)sender).Text;//+ b.Text;
+                    }
 
             }
-            else
-                if ((b.Text != ".") || (!labelResult.Text.Contains("."))) 
-                { 
-                    labelResult.Text = labelResult.Text + ((Button)sender).Text;//+ b.Text;
-                }
-
-                
         }
         private void bOperator_Click(object sender, EventArgs e)
         {
@@ -122,6 +158,8 @@ namespace CSharpLab6_Calc
                 // или lblEquation.Text += " " + Double.Parse(labelResult.Text).ToString();
                 lblEquation.Text += " " + labelResult.Text;
                 if (operation != "") {
+                    //! ! !
+                    //учитывать возможное изменение длины > n=16 поддерживаемых  символов
                     labelResult.Text = Calculate().ToString();
                 }
                 operation = ((Button)sender).Text;
@@ -146,11 +184,6 @@ namespace CSharpLab6_Calc
                 // добавляем новую операцию в lblEquation
                 lblEquation.Text = lblEquation.Text + operation;
             }
-                
-            //if (labelResult.Text != "0")
-            //{
-            //    labelResult.Text = "*"; // ((Button)sender).Text.ToString();
-            //}
 
         }
 
@@ -169,12 +202,12 @@ namespace CSharpLab6_Calc
 
         private void Calculator_ResizeEnd(object sender, EventArgs e)
         {
-
+            this.ResizeLblResult();
         }
 
         private void Calculator_KeyPress(object sender, KeyPressEventArgs e)
         {
-            //MessageBox.Show(e.KeyChar.ToString());
+            MessageBox.Show(e.KeyChar.ToString());
             switch(e.KeyChar.ToString())
             {
                 case "1":
@@ -225,12 +258,22 @@ namespace CSharpLab6_Calc
                 case "=":
                     butEqual.PerformClick();
                     break;
-                case "\b":
+                case "BackSpace":
                     butCE.PerformClick();
                     break;
                 default:
                     break;
             }
+        }
+
+        private void labelResult_TextChanged(object sender, EventArgs e)
+        {
+            this.ResizeLblResult();
+        }
+
+        private void Calculator_SizeChanged(object sender, EventArgs e)
+        {
+            this.ResizeLblResult();
         }
     }
 }
